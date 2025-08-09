@@ -20,16 +20,16 @@ export const Header = ({
     <div className="w-full p-2 flex flex-col gap-3">
       <div className="header-contain w-full max-w-[900px] h-1/2 mx-auto grid grid-cols-2 md:grid-cols-3 gap-4">
         <div className="brand flex items-center justify-start">StoreTest</div>
-        <div className="categories w-full px-3 flex items-center justify-between">
-          {CATEGORIES.map((c, i) => (
+        <div className="categories w-full px-3 flex items-center gap-3">
+          {CATEGORIES.slice(0, 5).map((c, i) => (
             <button
               key={i}
               onClick={() => updatePage(c)}
               className={`capitalize ${
-                currentPage.name === c.name ? "font-bold" : "text-neutral-800"
+                currentPage === c ? "font-bold" : "text-neutral-800"
               }`}
             >
-              {c.name}
+              {c}
             </button>
           ))}
         </div>

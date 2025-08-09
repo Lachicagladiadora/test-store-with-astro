@@ -2,10 +2,25 @@ import type { Page } from "./types";
 
 // put categories
 export const CATEGORIES: Page[] = [
-  { name: "books" },
-  { name: "clothes" },
-  { name: "toys" },
-  { name: "tools" },
+  "Food",
+  "Toys",
+  "Tools",
+  "Electronics",
+  "Books",
+  "Clothing",
+  "Home",
+  "Garden",
+  "Beauty",
+  "Sports",
+  "Automotive",
+  "Health",
+  "Music",
+  "Jewelry",
+  "Office",
+  "Shoes",
+  "Pet Supplies",
+  "Movies",
+  "Games",
 ];
 
 export const INFORMATION = [

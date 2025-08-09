@@ -4,22 +4,12 @@ import { Header } from "./atomic/organisms/Header";
 import type { Page, ProductData } from "./types";
 import { Footer } from "./atomic/organisms/Footer";
 import { Products } from "./atomic/organisms/Products";
-// import axios from "axios";
-// import AxiosMockAdapter from "axios-mock-adapter";
 import { PRODUCTS } from "../inner/constants";
 import { PAGE_OFFSET } from "./constants";
 
-// const mock = new AxiosMockAdapter(axios);
-
-// mock.onGet("/products", { params: { searchText: "" } }).reply(200, {
-//   products: PRODUCTS,
-// });
-
 function App() {
   const [query, setQuery] = useState<string>("");
-  const [currentPage, setCurrentPage] = useState<Page>({
-    name: "books",
-  });
+  const [currentPage, setCurrentPage] = useState<Page>("home");
   const [cart, setCart] = useState<ProductData[]>([]);
   const [products, setProducts] = useState<ProductData[]>([]);
   const [page, setPage] = useState(1);
@@ -34,6 +24,7 @@ function App() {
     }
     return response.json();
   };
+
   const getData = async () => {
     const data = await getProducts();
     const start = (page - 1) * PAGE_OFFSET;
@@ -45,9 +36,61 @@ function App() {
     const pageProducts = data.slice(start - 1, end - 1);
     setProducts(pageProducts);
   };
+
+  const getDataByCategory = async () => {
+    const response = (await getProducts()) as ProductData[];
+    if (currentPage !== "home") {
+      const data = response.filter((c) => c.category === currentPage);
+      console.log({ data });
+      const start = (page - 1) * PAGE_OFFSET;
+      const end = page * PAGE_OFFSET;
+      if (page === 1) {
+        setProducts(data.slice(0, 10));
+        return;
+      }
+      const pageProducts = data.slice(start - 1, end - 1);
+      setProducts(pageProducts);
+    }
+    const start = (page - 1) * PAGE_OFFSET;
+    const end = page * PAGE_OFFSET;
+    if (page === 1) {
+      setProducts(response.slice(0, 10));
+      return;
+    }
+    const pageProducts = response.slice(start - 1, end - 1);
+    setProducts(pageProducts);
+  };
+
+  const getDataByQuery = async () => {
+    const response = (await getProducts()) as ProductData[];
+    if (!query) return;
+    const currentQuery = query.toLowerCase();
+    const data = response.filter(
+      (c) =>
+        c.title?.toLowerCase().includes(currentQuery) ||
+        c.productName?.toLowerCase().includes(currentQuery)
+    );
+    const start = (page - 1) * PAGE_OFFSET;
+    const end = page * PAGE_OFFSET;
+    if (page === 1) {
+      setProducts(data.slice(0, 10));
+      return;
+    }
+    const pageProducts = data.slice(start - 1, end - 1);
+    setProducts(pageProducts);
+  };
+
   useEffect(() => {
     getData();
   }, [page]);
+
+  useEffect(() => {
+    getDataByCategory();
+  }, [currentPage]);
+
+  useEffect(() => {
+    getDataByQuery();
+  }, [query]);
 
   return (
     <div className="w-full bg-zinc-200 flex flex-col p-2">

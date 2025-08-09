@@ -1,6 +1,4 @@
-export type Page = {
-  name: string;
-};
+export type Page = string;
 
 type Status = "available" | "discontinued" | "out_of_stock" | "" | null;
 
