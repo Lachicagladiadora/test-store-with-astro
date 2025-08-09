@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+@media (max-width: 767px) {
+  .header-contain {
+    grid-template-areas:
+      "brand user-options"
+      "options options";
+  }
+  .brand {
+    grid-area: brand;
+  }
+  .categories {
+    grid-area: options;
+  }
+  .user-options {
+    grid-area: user-options;
+  }
+}
